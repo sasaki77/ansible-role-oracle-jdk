@@ -1,0 +1,5 @@
+oracle_jdk_download_folder: /opt
+oracle_jdk_download_url: http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.tar.gz
+oracle_jdk_install_folder: "{{ oracle_jdk_download_folder }}"
+oracle_jdk_name: "{{oracle_jdk_install_folder }}/jdk1.8.0_144"
+oracle_jdk_archive: "{{oracle_jdk_download_folder}}/jdk-8u144-linux-x64.tar.gz"

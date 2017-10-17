@@ -1,0 +1,35 @@
+- name: check java exists
+  stat: path={{oracle_jdk_name}}
+  register: java_exists
+
+- block:
+  - name: Download Java tgz
+    get_url:
+      headers: "Cookie: oraclelicense=accept-securebackup-cookie"
+      url: "{{ oracle_jdk_download_url }}"
+      dest: "{{ oracle_jdk_archive }}"
+      mode: 0644
+
+  - name: Create install path
+    file:
+      path: "{{ oracle_jdk_install_folder }}"
+      state: directory
+      mode: 0755 
+
+  - name: Unarchive
+    unarchive:
+      remote_src: yes
+      src: "{{ oracle_jdk_archive }}"
+      dest: "{{ oracle_jdk_install_folder }}"
+      owner: root
+      group: root
+  when: not java_exists.stat.exists
+  become: true
+
+- name: Make Java available for system
+  become: true
+  command: 'alternatives --install "/usr/bin/java" "java" "{{oracle_jdk_name}}/bin/java" 2000'
+
+- name: Clean up
+  become: true
+  file: state=absent path={{oracle_jdk_archive}}
